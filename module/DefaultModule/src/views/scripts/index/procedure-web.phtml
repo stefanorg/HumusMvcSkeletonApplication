@@ -1,0 +1,14 @@
+<?php
+  
+  //$categoria = 7 --> Procedure Web
+  $vettore_link = NoLibDb::get_link_by_categoria($categoria=7);
+  
+?>
+<h1>Procedure Web Dipartimentali</h1>
+<?php
+  echo NoLibHtml::displayElencoLink($vettore_link);
+?>
+
+<br />
+
+                   

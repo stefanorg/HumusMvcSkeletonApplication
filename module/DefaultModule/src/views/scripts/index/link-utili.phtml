@@ -1,0 +1,10 @@
+<?php
+  
+  //prendo tutti i link differenti da WebNoAuth
+  $vettore_link = NoLibDb::get_link_noauth($differente = TRUE)
+
+?>
+<h1>Altri Link Utili</h1>
+<?php
+  echo NoLibHtml::displayElencoLinkPerCategorie($vettore_link);
+?>

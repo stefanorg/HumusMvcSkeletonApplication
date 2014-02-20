@@ -1,0 +1,17 @@
+<?php $this->placeholder('head')->captureStart() ?>
+<form action="<?= $this->escape($this->form->getAction()) ?>"
+      method="<?= $this->escape($this->form->getMethod()) ?>"
+      id="login-form" >
+  <fieldset class="userdata">
+    <label for="modlgn-username">Nome utente</label>                  
+    <?php echo $this->form->username ?>@<?php echo $this->form->domain ?>
+    <label for="modlgn-passwd">Password</label>
+    <?php echo $this->form->password ?>
+    <label for="modlgn-rememberme">Ricordami</label>
+    <?php echo $this->form->rememberme ?>
+    <input type="submit" name="Submit" class="button" value="Login" />
+    <a href="?page=password_dimenticata" target="_self" title="Password dimenticata">Hai problemi di accesso?</a> - <a href="https://intranet.dipvvf.it/registrazioneutenti/Registrati.aspx" target="_blank" title="Registrati">Registrati</a>
+  </fieldset>
+    
+</form>
+<?php $this->placeholder('head')->captureEnd() ?>

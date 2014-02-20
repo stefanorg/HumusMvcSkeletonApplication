@@ -1,0 +1,12 @@
+<?php
+  
+  $vettore_link = NoLibDb::get_link_noauth();
+ 
+  //$regola_proxy =0 --> WebNoAuth
+  //$vettore_link = get_link_noauth();
+  //echo $vettore_link;
+?>
+<h1>Link Utili al Soccorso</h1>
+<?php
+  echo NoLibHtml::displayElencoLinkPerCategorie($vettore_link);
+?>

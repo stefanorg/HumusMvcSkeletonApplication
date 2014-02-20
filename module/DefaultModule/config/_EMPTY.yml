@@ -1,0 +1,42 @@
+model: Model_<?>
+displayName: <?>
+
+#labels:
+  #<nome_campo>: <label_campo>
+
+index: true
+  #title:
+  #ignoreFields:
+  #fields:
+  #maxPerPage: 20
+  #orders:
+    #<nome_campo>: true
+    #<nome_parzial>: <nome_campo> o <lista_campi>
+    #__defaults:
+      #<nome_campo>: ASC o DESC
+  #filter:
+    #ignoreFields:
+    #fields:
+    #__defaults:
+      #<nome_campo>:
+        #op: LIKE
+        #value: <value>
+  #bottomActions: <lista_partial>
+  #scripts: <lista_partial>
+
+create: true
+  #form:
+    #ignoreFields:
+    #fields:
+  #scripts: <lista_partial>
+
+show: true
+  #ignoreFields:
+  #fields:
+  #bottomActions: <lista_partial>
+  #scripts: <lista_partial>
+
+update: true
+  #form:
+    #ignoreFields:
+    #fields:

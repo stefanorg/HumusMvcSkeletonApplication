@@ -1,0 +1,232 @@
+<style type="text/css">
+
+.t_vuoto {
+	border: 0px 0px 0px 0px;
+}
+
+.t_controllo {
+	text-align:center;
+	font-size: 10px;
+	font-family: Verdana, Arial;
+	font-weight: bold;
+	border: 1px solid;
+	margin:0;
+	padding:0;
+	padding: 3px;
+}
+
+.t_controllo a:visited{
+	text-decoration: underline;
+	color: blue;
+}
+
+.t_paragrafo_nero {
+	text-align:center;
+	font-size: 10px;
+	font-family: Verdana, Arial;
+	font-weight: bold;
+	margin:0;
+	padding:0;
+	color: #ffffff;
+	background-color: #000000;
+}
+
+.t_etichetta_giorni {
+	text-align:center;
+	font-size: 10px;
+	font-family: Verdana, Arial;
+  font-style: italic;
+  font-weight: bold; 
+  text-decoration: underline;
+	border: 1px solid;
+	margin:0;
+	padding:0;
+	padding: 3px;
+}
+
+.t_numero_giorno {
+	text-align:center;
+	font-size: 10px;
+	font-family: Verdana, Arial;
+  font-weight: bold; 
+	border: 1px solid;
+	margin:0;
+	padding:0;
+	padding: 3px;
+}
+
+.t_numero_giorno_attuale {
+	text-align:center;
+	font-size: 10px;
+	font-family: Verdana, Arial;
+  font-weight: bold; 
+	border: 1px solid;
+	margin:0;
+	padding:0;
+	background-color:#C0C0C0;
+}
+
+.t_inizio_turno {
+	text-align:center;
+	font-size: 10px;
+	font-family: Verdana, Arial;
+  font-weight: normal; 
+	color: blacl;
+}
+
+.t_fine_turno {
+	text-align:center;
+	font-size: 10px;
+	font-family: Verdana, Arial;
+  font-weight: normal; 
+	color: red;
+}
+
+</style>
+
+
+<h1>Turnario Nazionale CNVVF (Valido dal 01/01/2000)</h1>
+
+<?php
+$anno = "";
+$mese = "";
+
+if (!isset($_GET['anno'])) $anno = date("Y");
+else $anno = $_GET['anno'];
+if (!isset($_GET['mese'])) $mese = date("n"); 
+else $mese = $_GET['mese']; 
+
+$annoattuale=$anno;
+$meseattuale=$mese;
+$annovisualizz=$anno;
+$mesii = array (1 => 'Gennaio', 'Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre');
+$turnogiorno = array (1 => 'A','B','C','D');
+$turnonotte = array (1 => 'D','A','B','C');
+
+
+$annoprecedente=$anno-1;
+$annosuccessivo=$anno+1;
+$meseprecedente=$mese-1;
+$mesesuccessivo=$mese+1;
+
+$content = "<center><table>";
+
+// PRIMA RIGA
+$content .= "
+<tr>
+  <td colspan=\"7\"><center>";
+    $content .= "<table border=\"0\">";
+    if ($annoprecedente >= 2000) {
+      $content .= "<tr><td class=\"t_controllo\">[<a href=\"?mese=$meseattuale&anno=$annoprecedente\"><<</a>]<br />Anno-</td>";
+    }
+    else $content .= "<td class=\"t_controllo\">&nbsp;</td>";
+    
+    $content .= "<td class=\"t_controllo\">[<a href=\"?mese=";
+    if ($meseprecedente < 1) $content .= "12&anno=$annoprecedente";
+    else $content .= $meseprecedente."&anno=".$annoattuale;
+    $content .= "\"><</a>]<br />Mese-</td>";
+    
+    $content .= "<td class=\"t_controllo\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$mesii[$mese]."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /> $annovisualizz";
+    
+    
+    $mesedebug = date("n");
+    $annodebug = date("Y");
+    if (($mese != $mesedebug) || ($anno != $annodebug)) {
+      $content .= "<br /><a href=\"?\">Torna al Mese attuale</a></td>";
+    }
+    
+    if ($annoprecedente <= 2036) {
+      $content .= "<td class=\"t_controllo\">[<a href=\"?mese=";
+      if ($mesesuccessivo>12) $content .= "1&anno=$annosuccessivo";
+      else $content .= $mesesuccessivo."&anno=".$annoattuale;
+      $content .= "\">></a>]<br />Mese+</td>";
+    }
+    
+    if ($annoprecedente <= 2036) {
+      $content .= "<td class=\"t_controllo\">[<a href=\"?mese=$meseattuale&anno=$annosuccessivo\">>></a>]<br />Anno+</td>";
+    }
+    $content .= "</tr>";
+    $content .= "</table>";
+  $content .= "</center></td>
+</tr>";
+
+
+
+// SECONDA RIGA
+$content .= "
+<tr>
+  <td class=\"t_etichetta_giorni\">Lun</td>
+  <td class=\"t_etichetta_giorni\">Mar</td>
+  <td class=\"t_etichetta_giorni\">Mer</td>
+  <td class=\"t_etichetta_giorni\">Gio</td>
+  <td class=\"t_etichetta_giorni\">Ven</td>
+  <td class=\"t_etichetta_giorni\">Sab</td>
+  <td class=\"t_etichetta_giorni\">Dom</td>
+</tr>";
+
+
+// RIGHE GIORNI
+setlocale(LC_ALL,'it_IT');
+$data = (mktime(0,0,0,$mese,1,$anno));
+$settimana= date("w",$data);
+if (isset($debug)) $content .= "giornosettimana:$settimana";
+if ($settimana == 0) $settimana = 7;
+$content .= "<tr>";
+$i=1;
+$ultimomese = date("t",$data);
+if (isset($debug)) $content .= "giorni del mese:".$ultimomese;
+while ($i < $settimana) { 
+  $i++; 
+  $content .= "<td class=\"t_numero_giorno\">&nbsp;</td>";
+}
+$oggi_mese = date("m");
+$oggi_anno = date("Y");
+$oggi_giorno = date("j");
+
+if (isset($debug)) { $content .= "oggi:$oggi_giorno mese:$oggi_mese anno:$oggi_anno"; }
+
+$j = 1;
+while ($j <= $ultimomese) { 
+  if ($i > 7) { $i=1; $content .= "</tr><tr>"; }
+ 
+  $class_cella = "t_numero_giorno";
+  if (($mese == $oggi_mese)&&($anno == $oggi_anno)&&($j == $oggi_giorno)) {
+        $class_cella = "t_numero_giorno_attuale";
+  }
+
+  $content .= "<td class=\"$class_cella\"><b>$j</b><br />";
+
+  $cercadata = date(mktime(0,0,0,$mese,$j,$anno));
+  $primadata = date(mktime(0,0,0,1,1,2000));
+  $differenza=round((($cercadata-$primadata)/86400),0)+1;
+  $giorni_ = $differenza;
+  $contat=0;
+  while ($differenza > 4) { 
+        $differenza=$differenza-4;
+        $contat++;
+        if ($contat > 8) $contat=1;
+  }
+  
+  $content .= "<font class=\"t_inizio_turno\"><b>".$turnogiorno[$differenza]."</b>".$contat."</font>~";         
+  if ($turnonotte[$differenza] == "D") {
+               if ($contat == 1) $contat=8;
+               else $contat--;
+  }
+  $content .= "<font class=\"t_fine_turno\"><b>".$turnonotte[$differenza]."</b>".$contat."</font></td> ";
+  $i++; 
+  $j++;
+}
+
+
+$content .= "</tr>";
+$dataaaaa = date("d/m/Y H:i");
+$meseeeee = date("m");
+
+// RIGA FINALE
+$content .= "<tr><td colspan=\"7\" class=\"t_controllo\">";
+if ($meseeeee == $mese) $content .= "<font class=\"t_paragrafo_nero\">Turno in servizio ($dataaaaa)</font><br />";
+$content .= "Giornaliero 8-20 / <font class=\"t_fine_turno\"><b>Notturno 20-8</b></font></td></tr>";
+$content .= "</table></center>";
+
+echo $content;
+?>
